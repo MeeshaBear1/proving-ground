@@ -1,0 +1,365 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Proving Ground — falsifiable outcome ledger</title>
+<meta name="description" content="A public, falsifiable record of claims, each backed by executed evidence a third party can re-derive.">
+<style>
+  :root {
+    --bg: #f7f6f2;
+    --bg-raised: #ffffff;
+    --ink: #1c1b19;
+    --ink-dim: #56534c;
+    --ink-faint: #8b8579;
+    --rule: #ddd8cd;
+    --rule-strong: #b8b1a1;
+    --accent: #8a4f2c;
+    --accent-ink: #ffffff;
+    --pass: #2f6b3f;
+    --pass-bg: #e6f0e5;
+    --pending: #8a5a00;
+    --pending-bg: #faf0d8;
+    --mono: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    --serif: Georgia, "Iowan Old Style", "Palatino Linotype", serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #161512;
+      --bg-raised: #201f1b;
+      --ink: #ece8df;
+      --ink-dim: #b7b0a1;
+      --ink-faint: #837c6d;
+      --rule: #3a382f;
+      --rule-strong: #55503f;
+      --accent: #d69a6a;
+      --accent-ink: #161512;
+      --pass: #8fce9d;
+      --pass-bg: #1e2b1f;
+      --pending: #e0b25e;
+      --pending-bg: #2c2410;
+    }
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--serif);
+    -webkit-font-smoothing: antialiased;
+  }
+  body {
+    max-width: 78rem;
+    margin: 0 auto;
+    padding: 3rem 1.5rem 5rem;
+  }
+  header {
+    border-bottom: 2px solid var(--ink);
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .kicker {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 0 0 0.6rem;
+  }
+  h1 {
+    font-size: clamp(1.9rem, 4vw, 2.7rem);
+    margin: 0 0 0.75rem;
+    line-height: 1.15;
+  }
+  .lede {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--ink-dim);
+    max-width: 62rem;
+    margin: 0;
+  }
+  .rule-box {
+    background: var(--bg-raised);
+    border: 1px solid var(--rule-strong);
+    border-left: 4px solid var(--accent);
+    border-radius: 6px;
+    padding: 1.1rem 1.4rem;
+    margin: 1.75rem 0 2.5rem;
+  }
+  .rule-box p {
+    margin: 0;
+    line-height: 1.6;
+    color: var(--ink);
+  }
+  .rule-box p + p { margin-top: 0.6rem; }
+  .rule-box strong { color: var(--accent); }
+  code {
+    font-family: var(--mono);
+    font-size: 0.9em;
+    background: var(--rule);
+    padding: 0.05em 0.35em;
+    border-radius: 3px;
+  }
+  h2 {
+    font-family: var(--mono);
+    font-size: 0.95rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    margin: 3rem 0 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--rule);
+  }
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--rule-strong);
+    border-radius: 8px;
+    background: var(--bg-raised);
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    min-width: 60rem;
+    font-size: 0.92rem;
+  }
+  thead th {
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-faint);
+    padding: 0.85rem 1rem;
+    border-bottom: 2px solid var(--ink);
+    white-space: nowrap;
+  }
+  tbody td {
+    padding: 0.95rem 1rem;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: color-mix(in srgb, var(--accent) 6%, transparent); }
+  td.id {
+    font-family: var(--mono);
+    color: var(--accent);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  td.evidence-type { color: var(--ink-dim); white-space: nowrap; }
+  td.artifact { color: var(--ink-dim); font-size: 0.88rem; }
+  td.date { font-family: var(--mono); color: var(--ink-faint); white-space: nowrap; font-size: 0.85rem; }
+  .verdict {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--pass);
+    background: var(--pass-bg);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    white-space: nowrap;
+  }
+  .verdict-note { display: block; margin-top: 0.35rem; color: var(--ink-dim); font-weight: 400; font-family: var(--serif); font-size: 0.88rem; white-space: normal; }
+
+  .pending-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.9rem;
+  }
+  .pending-list li {
+    background: var(--bg-raised);
+    border: 1px solid var(--rule-strong);
+    border-left: 4px solid var(--pending);
+    border-radius: 6px;
+    padding: 1rem 1.3rem;
+    line-height: 1.6;
+  }
+  .pending-list .tag {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--pending);
+    background: var(--pending-bg);
+    padding: 0.1rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    margin-right: 0.4rem;
+  }
+
+  .prose { line-height: 1.65; color: var(--ink-dim); max-width: 62rem; }
+  .prose ol, .prose ul { padding-left: 1.4rem; }
+  .prose li { margin-bottom: 0.4rem; }
+  .prose strong { color: var(--ink); }
+
+  footer {
+    margin-top: 3.5rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    line-height: 1.6;
+  }
+  .provenance-note {
+    margin: 2.5rem 0 0;
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-faint);
+    background: var(--bg-raised);
+    border: 1px dashed var(--rule-strong);
+    border-radius: 6px;
+    padding: 0.8rem 1.1rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="kicker">Proving Ground · Build #4</p>
+  <h1>Falsifiable outcome ledger</h1>
+  <p class="lede">
+    A public, falsifiable record of claims we make about our own products, each backed by
+    <em>executed evidence</em> — a touchstone dossier, a pre-registered eval with a p-value,
+    or a machine-verification count re-derivable from a named artifact. Ratified build #4 in
+    the next-five gameplan. It is legally clean self-attestation (we only attest to our own
+    claims), an FTC-substantiation defense file, an insurance file, and the distribution brand
+    every launch inherits.
+  </p>
+</header>
+
+<div class="rule-box">
+  <p><strong>The one rule:</strong> a claim enters this ledger only with evidence a third
+  party can re-derive without trusting us. No claim rests on model assertion. Same doctrine
+  as <code>touchstone/dossier@0</code>: absence of proof is <code>UNVERIFIABLE</code>, never
+  a pass.</p>
+  <p>A claim we can't yet substantiate is listed as <strong>PENDING</strong> — naming the gap
+  is itself the discipline.</p>
+</div>
+
+<h2>Ledger</h2>
+<div class="table-wrap">
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Claim (public-facing)</th>
+      <th>Evidence type</th>
+      <th>Artifact / repro</th>
+      <th>Verdict</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="id">PG-1</td>
+      <td>The skill library's output-quality uplift is statistically significant</td>
+      <td class="evidence-type">pre-registered A/B, Fisher exact</td>
+      <td class="artifact">opus-skills <code>evals/</code>, EVIDENCE.md §2 (repo-truth-discovery patched: B 26/30 vs A 10/30 correct test command)</td>
+      <td><span class="verdict">p ≈ 5e-5<span class="verdict-note">(+53pp)</span></span></td>
+      <td class="date">2026-07-13</td>
+    </tr>
+    <tr>
+      <td class="id">PG-2</td>
+      <td>The provenance skill converts unsafe deletions into grounded keeps</td>
+      <td class="evidence-type">deep-fence A/B</td>
+      <td class="artifact">provenance-skill memory + evals</td>
+      <td><span class="verdict">p ≈ 0.0031 / 1.1e-5<span class="verdict-note">(7/10 unaided deletions → 10/10 grounded keeps)</span></span></td>
+      <td class="date">2026-07-13</td>
+    </tr>
+    <tr>
+      <td class="id">PG-3</td>
+      <td>A real CLI harness keeps a weak model honest where a bare subagent fabricates</td>
+      <td class="evidence-type">replication, Fisher exact</td>
+      <td class="artifact">opus-skills U1/R1 run docs (0/5 fabrication CLI vs 5/5 bare-subagent)</td>
+      <td><span class="verdict">p ≈ 0.004</span></td>
+      <td class="date">2026-07-12</td>
+    </tr>
+    <tr>
+      <td class="id">PG-4</td>
+      <td>An installed skill library loads on-trigger in a real session (0 in a bare subagent)</td>
+      <td class="evidence-type">positive-control probe, Fisher</td>
+      <td class="artifact">EVIDENCE.md §2 positive-control (10/10 on-trigger vs 0/20)</td>
+      <td><span class="verdict">p ≈ 1e-5</span></td>
+      <td class="date">2026-07-12</td>
+    </tr>
+    <tr>
+      <td class="id">PG-5</td>
+      <td>Fleet skill routing is non-overlapping</td>
+      <td class="evidence-type">golden-ask routing gate</td>
+      <td class="artifact">opus-skills golden-asks v2</td>
+      <td><span class="verdict">34/34</span></td>
+      <td class="date">2026-07-13</td>
+    </tr>
+    <tr>
+      <td class="id">PG-6</td>
+      <td>The severance rule pack is machine-verified with zero gate failures</td>
+      <td class="evidence-type">deterministic gate + 2-lab cross-review</td>
+      <td class="artifact">pandect-rule-assurance <code>candidate-rulepacks/severance/</code></td>
+      <td><span class="verdict">12/12 NEEDS_REVIEW, 0 FAIL<span class="verdict-note">(attorney attestation pending)</span></span></td>
+      <td class="date">2026-07</td>
+    </tr>
+    <tr>
+      <td class="id">PG-7</td>
+      <td>Touchstone verdicts are re-derivable without trusting the producer</td>
+      <td class="evidence-type">open format spec + gate re-derivation</td>
+      <td class="artifact">touchstone <code>docs/dossier.md</code>, <code>src/gate.ts</code> (19/19 tests)</td>
+      <td><span class="verdict">SUPPORTED<span class="verdict-note">(spec published)</span></span></td>
+      <td class="date">2026-07-16</td>
+    </tr>
+    <tr>
+      <td class="id">PG-8</td>
+      <td>Pandect Wave-A: every needs-reverification rule taken to machine ceiling</td>
+      <td class="evidence-type">batch gate over 418 rules</td>
+      <td class="artifact">pandect-rule-assurance <code>audit-reports/wave-a-2026-07-10.md</code></td>
+      <td><span class="verdict">418/418<span class="verdict-note">(2 pass / 232 needs_review / 184 fail — honest distribution)</span></span></td>
+      <td class="date">2026-07-13</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h2>Pending — named gaps, instrument before claiming</h2>
+<ul class="pending-list">
+  <li><span class="tag">PG-P1</span>Consumer-product outcome claims (Plainsight/Marque "helped a user avoid X"): require <em>consented</em> real-world outcomes. None instrumented yet. Do not make outcome claims in launch copy until this row has evidence.</li>
+  <li><span class="tag">PG-P2</span>Touchstone judge false-block rate (decides whether the honest v1 claim is "gate" or "advisory" per the market study). Measure before positioning.</li>
+  <li><span class="tag">PG-P3</span>Wave-C completion audit (245 never-audited rules) — <strong>partial, 57/245</strong> (workflow wf_943c9018-10d hit the session usage cap 2026-07-16 at rule 57; 188 pending resume). The 57 that completed: gate verdicts independently re-derived from each on-disk trail via gate.py, <strong>0 mismatch</strong> vs agent self-reports → 48 needs_review, 9 fail (committed b80e639). A PG-8-style row for the full 245 lands when the resume finishes the remaining 188 and <code>audit_batch.py report</code> emits the batch report.</li>
+</ul>
+
+<h2>How a launch inherits this</h2>
+<div class="prose">
+  <p>Every product launch cites the ledger row(s) that substantiate its public claims, and adds
+  its own claims as new rows <em>with evidence attached</em>. A claim in launch copy with no
+  ledger row is a bug — the copy overclaims. This is the FTC-substantiation posture made
+  mechanical: we can show the executed evidence for every superlative we ship.</p>
+</div>
+
+<h2>Discipline — how a row is born</h2>
+<div class="prose">
+  <ol>
+    <li>A public claim is drafted (launch copy, README, pitch).</li>
+    <li>It gets a ledger row only when an executed artifact substantiates it — a dossier, a
+    pre-registered eval with a computed statistic, or a gate/verification count from a named
+    file. Model opinion never substantiates a row.</li>
+    <li>Marginal or unproven → the claim is softened or the row is <strong>PENDING</strong>
+    until instrumented.</li>
+    <li>Rows are never deleted to look better; a falsified claim is marked <strong>REFUTED</strong>
+    and kept — that's what makes the ledger credible.</li>
+  </ol>
+</div>
+
+<p class="provenance-note">
+  Seeded 2026-07-16. Evidence citations trace to the portfolio audit record and product
+  repos; p-values are from pre-registered eval runs recorded at the cited locations.
+  Re-derive any row from its artifact — that is the point.
+</p>
+
+<footer>
+  Proving Ground — falsifiable outcome ledger · source: LEDGER.md
+</footer>
+
+</body>
+</html>
