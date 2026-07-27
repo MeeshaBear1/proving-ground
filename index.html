@@ -318,6 +318,30 @@
       <td><span class="verdict">418/418<span class="verdict-note">(2 pass / 232 needs_review / 184 fail — honest distribution)</span></span></td>
       <td class="date">2026-07-13</td>
     </tr>
+    <tr>
+      <td class="id">PG-9</td>
+      <td>Our security instrument finds real defects in our own storefront — and the fix is measured, not asserted</td>
+      <td class="evidence-type">before/after scan artifacts</td>
+      <td class="artifact">shipsafe <code>dogfood/broadside.json</code> (F/20) → <code>dogfood/broadside-final.json</code> (C/66); both carry mode <code>mechanical-unreviewed</code> and their basis line verbatim</td>
+      <td><span class="verdict">F/20 → C/66<span class="verdict-note">(mechanical floor, no AI review pass — the pessimistic grade, disclosed as such)</span></span></td>
+      <td class="date">2026-07-26</td>
+    </tr>
+    <tr>
+      <td class="id">PG-10</td>
+      <td>Tenth's authorization guardrail is enforced in code, and its audit trail survives its own mistake</td>
+      <td class="evidence-type">coded guardrail + append-only audit record</td>
+      <td class="artifact">Tenth <code>apps/api/src/crawl-target.ts</code> (required <code>expect</code> identity fingerprint, fail-closed) after a $1.32 crawl of an unauthorized app on a reused port; mislabeled graph invalidated via <code>crawl_data_invalidated</code> row beside the original <code>crawl_completed</code> — never erased. Verified good re-crawl: 11 states / 53 edges, artifacts under <code>apps/api/.artifacts/graph/3fee43b0-…/</code></td>
+      <td><span class="verdict">SUPPORTED<span class="verdict-note">(the incident is the evidence — recorded, remediated, guarded)</span></span></td>
+      <td class="date">2026-07-26</td>
+    </tr>
+    <tr>
+      <td class="id">PG-11</td>
+      <td>The AI-visibility gate we sell passes on our own selling domains</td>
+      <td class="evidence-type">public prerequisites, third-party checkable</td>
+      <td class="artifact">SolvedAgain launch gate, 2026-07-26: broadsidevolley.com 4/4; shipsaife.com 2/4 → 4/4 after fixes. All four prerequisites are public — anyone can re-check reachability, AI-crawler rules in <code>robots.txt</code>, homepage JSON-LD, and <code>/llms.txt</code> without our tooling</td>
+      <td><span class="verdict">4/4 · 4/4<span class="verdict-note">(garboard.dev 2/4 and slipway.build 3/4 deliberately left — not selling properties; honest distribution)</span></span></td>
+      <td class="date">2026-07-26</td>
+    </tr>
   </tbody>
 </table>
 </div>
