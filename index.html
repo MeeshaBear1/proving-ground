@@ -360,6 +360,15 @@
       <td><span class="verdict draft">DRAFT · 19/30 → 3/30<span class="verdict-note">(tier-scoped: a claude-haiku-4-5 result, not a claim about any frontier model — headroom's two frontier harm controls at Sonnet 5 showed zero harm, p = 1.0, one at-ceiling and one underpowered, disclosed as such. This row is why a matched harm control is mandatory before any uplift claim. Pending operator review before publication.)</span></span></td>
       <td class="date">2026-07-18</td>
     </tr>
+    <!-- PG-14: DRAFT — pending operator review before publication. Source: the 2026-08-13 evidence-stack wiring session. -->
+    <tr>
+      <td class="id">PG-14</td>
+      <td>A sealed logbook record is checkable by tools that share only its <em>published format</em> — not logbook's runtime. Falsified by: either independent verifier failing to reproduce the stated verdicts on the named committed fixtures, or the tampered fixtures verifying as intact</td>
+      <td class="evidence-type">cross-implementation re-derivation, two runtimes</td>
+      <td class="artifact">logbook <code>bin/logbook-claims.mjs</code> derives a <code>touchstone/claim-batch@0</code> from <code>fixtures/vectors/record-valid.json</code>; touchstone <code>verify-batch --allow-exec</code> returns <strong>6/6 SUPPORTED</strong> (exit 0), while a batch derived from <code>record-fail-step-tampered.json</code> reports the integrity claim UNVERIFIABLE (exit 2). Independently, isonomia's <code>spec/verifiers/record0-verifier.mjs</code> — a re-implementation of the format's SPEC §5 chain importing no logbook code — was run directly on logbook's committed fixtures (<code>node record0-verifier.mjs &lt; record-valid.json</code>), returning MATCH on the valid record, TAMPERED on the step-tampered and reordered ones, and MATCH on the truncated one, which logbook itself rejects. Neither repo imports the other</td>
+      <td><span class="verdict draft">DRAFT · 6/6 SUPPORTED · 3 of 4 fixtures agree<span class="verdict-note">(Limits, disclosed: of the six claims, the four structural ones restate the record's own fields — they detect <em>substitution</em> of a different record, not tampering; and the integrity claim shells out to logbook's own verifier, so it is not independent. The genuinely independent leg is isonomia's, and it walks the hash chain only, never the signature. On <code>record-fail-truncated.json</code> the two implementations therefore <strong>disagree</strong>: isonomia returns MATCH, because dropping the last step leaves a chain that is still internally consistent, while logbook returns SIGNATURE_INVALID, because its signature commits to <code>stepCount</code>. That is a structural limit of chain-walking rather than a defect in either — isonomia catches the same case one layer up, where the packet binds each artifact by sha256 before dispatch — but it means agreement is demonstrated on three of the four committed fixtures, not all four. Pending operator review before publication.)</span></span></td>
+      <td class="date">2026-08-13</td>
+    </tr>
   </tbody>
 </table>
 </div>

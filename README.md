@@ -11,8 +11,9 @@ machine-verification count re-derivable from a named artifact. It is legally cle
 self-attestation (we only attest to our own claims), an FTC-substantiation defense file, an
 insurance file, and the distribution brand every launch inherits.
 
-The ledger content (8 rows + 3 pending rows) lives directly in `index.html` here. New rows get
-added to this repo going forward — it is the source of truth, not a mirror.
+The ledger content (14 rows + 3 pending rows) lives directly in `index.html` here. New rows get
+added to this repo going forward — it is the source of truth, not a mirror. PG-12, PG-13 and
+PG-14 are marked **DRAFT**: authored with evidence attached, held back pending operator review.
 
 ## The one rule
 
