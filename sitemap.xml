@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated 2026-10-10 by seo-aeo/scaffold-static.mjs.
+     The host is literal because a static site has no build-time env. If the domain
+     changes, this file and robots.txt change with it. -->
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url><loc>https://proving-ground-pink.vercel.app/</loc></url>
+</urlset>

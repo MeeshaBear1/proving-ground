@@ -1,0 +1,7 @@
+# Every crawler is allowed — this records the policy this site was already
+# running under rather than changing it. To block a named agent, give it its own
+# User-agent block; do not narrow the * rule silently.
+User-agent: *
+Allow: /
+
+Sitemap: https://proving-ground-pink.vercel.app/sitemap.xml
