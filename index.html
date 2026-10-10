@@ -4,8 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="canonical" href="https://proving-ground-pink.vercel.app/">
-<title>Proving Ground — falsifiable outcome ledger</title>
-<meta name="description" content="A public, falsifiable record of claims, each backed by executed evidence a third party can re-derive.">
+<title>Proving Ground: every claim we make, with its evidence</title>
+<meta name="description" content="Every claim the studio makes about its own products, each with evidence you can re-derive without trusting us. The claims we can't prove yet are listed as gaps.">
 <style>
   :root {
     --bg: #f7f6f2;
@@ -243,36 +243,35 @@
 <body>
 
 <header>
-  <p class="kicker">Proving Ground · Build #4</p>
-  <h1>Falsifiable outcome ledger</h1>
+  <p class="kicker">Proving Ground · the studio's claims ledger</p>
+  <h1>Check our claims without trusting us</h1>
   <p class="lede">
-    A public, falsifiable record of claims we make about our own products, each backed by
-    <em>executed evidence</em> — a touchstone dossier, a pre-registered eval with a p-value,
-    or a machine-verification count re-derivable from a named artifact. Ratified build #4 in
-    the next-five gameplan. It is legally clean self-attestation (we only attest to our own
-    claims), an FTC-substantiation defense file, an insurance file, and the distribution brand
-    every launch inherits.
+    Every claim here is about our own work, and each one tells you where to check it. Open
+    the file a row names, rerun what it ran, and you'll know whether the claim holds. PG-1,
+    for example, says our skill library makes a model's work measurably better, and names
+    the eval you would rerun. The claims we can't prove yet sit below the ledger, with the
+    gap named.
   </p>
 </header>
 
 <div class="rule-box">
-  <p><strong>The one rule:</strong> a claim enters this ledger only with evidence a third
-  party can re-derive without trusting us. No claim rests on model assertion. Same doctrine
-  as <code>touchstone/dossier@0</code>: absence of proof is <code>UNVERIFIABLE</code>, never
-  a pass.</p>
-  <p>A claim we can't yet substantiate is listed as <strong>PENDING</strong> — naming the gap
-  is itself the discipline.</p>
+  <p><strong>The one rule:</strong> a claim gets a row only when someone outside the studio
+  can re-derive its evidence from the artifact the row names. Where proof is missing, the
+  verdict is <code>UNVERIFIABLE</code>, the same rule <code>touchstone/dossier@0</code>
+  keeps.</p>
+  <p>A claim we can't prove yet is listed as <strong>PENDING</strong>, so you can see
+  exactly what we have not shown.</p>
 </div>
 
-<h2>Ledger</h2>
+<h2>Claims With Evidence</h2>
 <div class="table-wrap">
 <table>
   <thead>
     <tr>
       <th>#</th>
-      <th>Claim (public-facing)</th>
+      <th>Claim</th>
       <th>Evidence type</th>
-      <th>Artifact / repro</th>
+      <th>Where to re-derive it</th>
       <th>Verdict</th>
       <th>Date</th>
     </tr>
@@ -396,43 +395,45 @@
 </table>
 </div>
 
-<h2>Pending — named gaps, instrument before claiming</h2>
+<h2>Not Proven Yet</h2>
 <ul class="pending-list">
   <li><span class="tag">PG-P1</span>Consumer-product outcome claims (Plainsight/Marque "helped a user avoid X"): require <em>consented</em> real-world outcomes. None instrumented yet. Do not make outcome claims in launch copy until this row has evidence.</li>
   <li><span class="tag">PG-P2</span>Touchstone judge false-block rate (decides whether the honest v1 claim is "gate" or "advisory" per the market study). Measure before positioning.</li>
   <li><span class="tag">PG-P3</span>Wave-C completion audit (245 never-audited rules) — <strong>partial, 57/245</strong> (workflow wf_943c9018-10d hit the session usage cap 2026-07-16 at rule 57; 188 pending resume). The 57 that completed: gate verdicts independently re-derived from each on-disk trail via gate.py, <strong>0 mismatch</strong> vs agent self-reports → 48 needs_review, 9 fail (committed b80e639). A PG-8-style row for the full 245 lands when the resume finishes the remaining 188 and <code>audit_batch.py report</code> emits the batch report.</li>
 </ul>
 
-<h2>How a launch inherits this</h2>
+<h2>Where Launches Cite It</h2>
 <div class="prose">
-  <p>Every product launch cites the ledger row(s) that substantiate its public claims, and adds
-  its own claims as new rows <em>with evidence attached</em>. A claim in launch copy with no
-  ledger row is a bug — the copy overclaims. This is the FTC-substantiation posture made
-  mechanical: we can show the executed evidence for every superlative we ship.</p>
+  <p>When one of our products launches, its public claims cite the rows here that back them,
+  and any new claim arrives as a new row <em>with its evidence attached</em>. A claim in
+  launch copy with no row behind it is a bug: the copy says more than we can show. So when
+  you read a superlative from us, the row that earns it is on this page. The FTC expects an
+  advertiser to hold the evidence before the claim ships, and this ledger is where we keep
+  ours.</p>
 </div>
 
-<h2>Discipline — how a row is born</h2>
+<h2>How a Row Begins</h2>
 <div class="prose">
   <ol>
-    <li>A public claim is drafted (launch copy, README, pitch).</li>
-    <li>It gets a ledger row only when an executed artifact substantiates it — a dossier, a
-    pre-registered eval with a computed statistic, or a gate/verification count from a named
-    file. Model opinion never substantiates a row.</li>
-    <li>Marginal or unproven → the claim is softened or the row is <strong>PENDING</strong>
-    until instrumented.</li>
-    <li>Rows are never deleted to look better; a falsified claim is marked <strong>REFUTED</strong>
-    and kept — that's what makes the ledger credible.</li>
+    <li>A public claim appears in a draft: launch copy, a README, a pitch.</li>
+    <li>It earns a row only when something that ran backs it up: a dossier, a pre-registered
+    eval with its computed statistic, or a verification count from a named file. A model's
+    opinion never earns a row.</li>
+    <li>When the evidence is thin, the claim gets softer, or it waits as
+    <strong>PENDING</strong> until something can measure it.</li>
+    <li>A row is never deleted to look better. A claim the evidence overturns is marked
+    <strong>REFUTED</strong> and stays on the page, so you can see what we got wrong.</li>
   </ol>
 </div>
 
 <p class="provenance-note">
-  Seeded 2026-07-16. Evidence citations trace to the portfolio audit record and product
-  repos; p-values are from pre-registered eval runs recorded at the cited locations.
-  Re-derive any row from its artifact — that is the point.
+  Seeded 2026-07-16. Every citation points to the audit record or the product repo it came
+  from, and every p-value comes from a pre-registered eval run recorded at the cited location.
+  Pick any row and re-derive it from the artifact it names.
 </p>
 
 <footer>
-  Proving Ground — falsifiable outcome ledger · source: LEDGER.md
+  Proving Ground · the studio's claims, with their evidence · source: LEDGER.md
 </footer>
 
 </body>
