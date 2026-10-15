@@ -24,7 +24,7 @@ A public, falsifiable record of claims, each backed by executed evidence a third
 | [[NEEDS DERIVATION: the sibling this property is actually mistaken for]] | — | — |
 
 No family hub named in the repo constants.
-Never cross-sell a sibling in this property's copy.
+Cross-sell a sibling where the reader's need matches it (operator ruling 2026-10-13): name it by its own name and address, say the same studio makes both, and keep it out of the headline, the entity sentence and checkout. The trap is the accidental cross-sell, where this property's copy starts describing a sibling as itself.
 
 ## The questions this property must answer
 
